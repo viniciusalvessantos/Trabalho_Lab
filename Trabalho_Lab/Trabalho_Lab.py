@@ -40,7 +40,7 @@ def calcular_tempo_ultima_atualizacao(updated_at):
 
 
 url = 'https://api.github.com/graphql';
-token = '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';
+token = '';
 
 headers = {
     'Authorization': f'Bearer {token}',
