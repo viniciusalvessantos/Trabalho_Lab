@@ -20,6 +20,7 @@ query SearchRepositories($queryString: String!, $first: Int!, $after: String) {
       node {
         ... on Repository {
           name
+          url
           defaultBranchRef {
             target {
               ... on Commit {
@@ -57,7 +58,7 @@ def make_github_api_request(query, variables):
 def get_all_repositories():
     response = {'data': {'search': {'edges': []}}}
     after_cursor = None
-    remaining_results = 10
+    remaining_results = 1000
 
     while remaining_results > 0:
         variables = {
@@ -101,7 +102,8 @@ def filter_query(query):
             'age': calculate_age(node['node']['createdAt']),
             'releases': node['node']['releases']['totalCount'],
             'language': node['node']['primaryLanguage']['name'],
-            'clone_url': node['node']['defaultBranchRef']['target']['zipballUrl']
+            'zip_url': node['node']['defaultBranchRef']['target']['zipballUrl'],
+            'clone_url': node['node']['url']
         })
     return response
 
@@ -135,4 +137,4 @@ if __name__ == '__main__':
   else:
     date = filter_query(query)
     export_csv(date,"questao00")
-    export_zip(date)
+    #export_zip(date)
